@@ -26,6 +26,8 @@ gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem "twitter-bootstrap-rails"
 
+gem 'simple_form'
+
 gem "font-awesome-rails"
 
 
