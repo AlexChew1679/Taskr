@@ -34,8 +34,14 @@ class TasksController < ApplicationController
     end
 
     def index
-      @task = Task.all
+      @tasks = Task.all
     end
+
+    def destroy
+      @task.destroy
+      flash[:notice] = "Task was succesfully deleted"
+      redirect_to tasks_path
+    end  
 
 
 
