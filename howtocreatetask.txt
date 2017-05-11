@@ -114,7 +114,7 @@ n create a  index.html.erb  ( show all Task )
                           <td><%= task.content %></td>
                           <td><%= link_to 'Show', task_path(task) %> </td>
                           <td><%= link_to 'Edit', edit_task_path(task) %> </td>
-                          <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+                             DESTROY PUT HERE :)
                         </tr>
                         <%end%>
                   </table>
@@ -126,6 +126,12 @@ n create a  index.html.erb  ( show all Task )
                         flash[:notice] = "Task was succesfully deleted"
                         redirect_to tasks_path
                       end
+
+
+                      paste this inside <tr> below link_to 'Edit'
+                      <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+
+
 13 . clean up the code
 
 create _form.html.erb
@@ -147,7 +153,16 @@ paste this at the lower below private
                               end
 
 
-14.. 1 major problem, now u can go to localhost:3000/tasks/new with or without signin in... means outsider can access to list of Tasks , big problem, so what u do?
+14. now the Task dont have a USER ID, so everyone can sign in and the task is not assigned to that User, so create USER ID by
+                                  rails g migration add_user_id_to_tasks user_id:integer
+
+                                  set model : user.rb and task.rb
+
+                                  user.rb   : has_many :tasks, dependent: :destroy
+                                  task.rb   : belongs_to :user
+
+
+15.. 1 major problem, now u can go to localhost:3000/tasks/new with or without signin in... means outsider can access to list of Tasks , big problem, so what u do?
 
 go to task controller , change it to this
 
@@ -166,3 +181,36 @@ go to task controller , change it to this
 
     add at top of task controller
                               before_action :authenticate_user!   --- this come from devise gem
+
+
+  16 .. now the task dont have the status STATE ..
+
+
+  run $rails g migration add_state_to_tasks state:string
+
+  class AddStateToTasks < ActiveRecord::Migration[5.0]
+    def change
+      add_column :tasks, :state, :string, default: 'to_do'    ##default: 'to_do' we add it
+    end
+  end
+
+
+                put this at _form.html.erb    => <%= f.input :state %>
+
+                put this at show.html.erb => <strong> Status: </strong> <%= @task.state %>
+
+                at index.html.erb , copy the current code and paste 2 more times below, 1 todo 2 doing 3 done , see the file and is self-explanatory
+
+  go to tasks controller at index method
+
+                              def index
+                                @to_do = current_user.tasks.where(state: 'to_do')
+                                @doing = current_user.tasks.where(state: 'doing')
+                                @done = current_user.tasks.where(state: 'done')
+                              end
+
+      ensure at index.html.erb must have this matching
+
+        <% @to_do.each do |task|  %>
+          <% @doing.each do |task|  %>
+            <% @done.each do |task|  %>
