@@ -214,3 +214,20 @@ go to task controller , change it to this
         <% @to_do.each do |task|  %>
           <% @doing.each do |task|  %>
             <% @done.each do |task|  %>
+
+
+17. Create a button to mark as todo doing and done
+
+go to tasks controller and place
+
+                        def change
+                          @task.update_attributes(state: params[:state])
+                          flash[:notice] = "Task status was succesfully changed"
+                          redirect_to tasks_path
+                        end
+
+add    before_action :set_task, only: [:edit, :update, :show, :destroy, :change]   => add 1 more change cause sharing the same code
+
+go to index.html.erb  n paste it    => <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
+
+GO TO INDEX.HTML.ERB AND SEARCH EVERYTHING WITH 17 

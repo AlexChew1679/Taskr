@@ -7,6 +7,7 @@
   <tr>
 <th> Content </th>
 <th> State </th>
+<th colspan = "4"> </th>
   </tr>
 
   <% @to_do.each do |task|  %>  <!-- must match at tasks controller -->
@@ -16,6 +17,7 @@
         <td><%= link_to 'Show', task_path(task) %> </td>
         <td><%= link_to 'Edit', edit_task_path(task) %> </td>
         <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+        <td><%= link_to 'Mark as Doing', change_task_path(task, state: "doing"), method: :put  %> </td> <!-- 17 -->
       </tr>
       <%end%>
 </table>
@@ -29,6 +31,7 @@
   <tr>
 <th> Content </th>
 <th> State </th>
+<th colspan = "5"> </th>
   </tr>
 
   <% @doing.each do |task|  %> <!-- must match at tasks controller -->
@@ -38,6 +41,8 @@
         <td><%= link_to 'Show', task_path(task) %> </td>
         <td><%= link_to 'Edit', edit_task_path(task) %> </td>
         <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+        <td><%= link_to 'Mark as To Do', change_task_path(task, state: "to_do"), method: :put  %> </td><!-- 17 -->
+        <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
       </tr>
       <%end%>
 </table>
@@ -51,6 +56,7 @@
   <tr>
 <th> Content </th>
 <th> State </th>
+<th colspan = "4"> </th>
   </tr>
 
   <% @done.each do |task|  %>  <!-- must match at tasks controller -->
@@ -60,6 +66,7 @@
         <td><%= link_to 'Show', task_path(task) %> </td>
         <td><%= link_to 'Edit', edit_task_path(task) %> </td>
         <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+        <td><%= link_to 'Mark as Doing', change_task_path(task, state: "doing"), method: :put  %> </td><!-- 17 -->
       </tr>
       <%end%>
 </table>
