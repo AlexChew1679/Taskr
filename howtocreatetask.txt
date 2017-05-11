@@ -83,8 +83,86 @@ at task controller :
                             @task = Task.find(params[:id])
                           end
 
-  create a show.html.erb
+  create a show.html.erb  ( show only 1 task according to id)
 
                         <h1> Showing Task </h1>
 
                         <strong> Content: </strong> <%= @task.content %>
+                        <%= link_to 'Go Back to New Task' , new_task_path %>|
+                        <%= link_to 'Go Back to Edit Task' , edit_task_path(@task) %>
+                        <%= link_to 'Show all Task' , tasks_path %>|
+
+11.  put this at tasks_controller
+                            def index
+                              @tasks = Task.all
+                            end
+
+n create a  index.html.erb  ( show all Task )
+
+                  <h1> All Task </h1>
+
+                  <%=link_to 'New Task', new_task_path %>
+                  </br>
+
+                  <table>
+                    <tr>
+                  <th> Content </th>
+                    </tr>
+
+                    <% @tasks.each do |task|  %>
+                        <tr>
+                          <td><%= task.content %></td>
+                          <td><%= link_to 'Show', task_path(task) %> </td>
+                          <td><%= link_to 'Edit', edit_task_path(task) %> </td>
+                          <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+                        </tr>
+                        <%end%>
+                  </table>
+
+12.  paste this at tasks_controller.rb
+                      def destroy
+                        #@task = Task.find(params[:id])
+                        @task.destroy
+                        flash[:notice] = "Task was succesfully deleted"
+                        redirect_to tasks_path
+                      end
+13 . clean up the code
+
+create _form.html.erb
+
+cut code from new.html.erb and edit.html.erb  n paste it at _form.html.erb , then at new.html.erb paste  and edit.html.erb
+
+                          <%= render 'form' %>
+
+clean up tasks_controller
+
+since   edit update show destroy, have the same line of code, paste this at top of task controller
+
+                      before_action :set_task, only: [:edit, :update, :show, :destroy]
+
+paste this at the lower below private
+
+                            def set_task
+                                @task = Task.find(params[:id])
+                              end
+
+
+14.. 1 major problem, now u can go to localhost:3000/tasks/new with or without signin in... means outsider can access to list of Tasks , big problem, so what u do?
+
+go to task controller , change it to this
+
+                            def index
+                              @tasks = current_user.tasks
+                            end
+
+                            def update
+                                if @task.update(tasks_params)
+                                  flash[:notice] = "Task was succesfully updatedd"
+                                  redirect_to task_path(@task)
+                                else
+                                  render 'edit'
+                                end
+                            end
+
+    add at top of task controller
+                              before_action :authenticate_user!   --- this come from devise gem
