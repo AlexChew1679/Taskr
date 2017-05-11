@@ -1,0 +1,90 @@
+1. create a migration file of
+  rails g migration create_tasks.rb
+2. create model task.rb
+3. create tasks_controller.rb
+4. create tasks folder at view
+5. put def new at tasks_controller
+                          def new
+                            @task = Task.new
+                          end
+
+
+ and   create new.html.erb
+
+                    <% if @task.errors.any? %>
+                    <h4> Oopps u fuck up! </h4>
+                      <ul>
+                      <% @task.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                      <%end%>
+                      </ul>
+                    <%end%>
+
+                    <%= simple_form_for @task do |f| %>
+                      <%= f.input :content %>
+                      <%= f.button :submit %>
+
+                    <% end %
+6. in order to show Flash Message, paste this
+                      <% flash.each do |name,msg| %>
+                        <%= msg %>
+                  at application.html.erb at body
+
+7. put at tasks_controller.rb  POST
+                      def create
+                        @task = Task.new(tasks_params)
+                        if @task.save
+                          flash[:notice] = "Task was succesfully created"
+                          redirect_to task_path(@task)
+                        else
+                          render 'new'
+                        end
+                      end
+
+8. create edit.html.erb at view/tasks , copy n paste from new.html.erb
+
+                    <h1> Edit Task </h1>
+
+                    <% if @task.errors.any? %>
+                    <h4> Oopps u fuck up! </h4>
+                      <ul>
+                      <% @task.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                      <%end%>
+                      </ul>
+                    <%end%>
+
+                    <%= simple_form_for @task do |f| %>
+                      <%= f.input :content %>
+                      <%= f.button :submit %>
+
+                    <% end %>
+
+at task controller :
+                      def edit
+                          @task = Task.find(params[:id])
+
+
+9.  after edit, the content is updated  , then paste this at tasks_controller
+
+                      def update
+                          @task = Task.find(params[:id])
+                          if @task.update(tasks_params)
+                            flash[:notice] = "Task was succesfully updatedd"
+                            redirect_to task_path(@task)
+                          else
+                            render 'edit'
+                          end
+                      end
+
+10. put this at tasks_controller
+
+                          def show
+                            @task = Task.find(params[:id])
+                          end
+
+  create a show.html.erb
+
+                        <h1> Showing Task </h1>
+
+                        <strong> Content: </strong> <%= @task.content %>
