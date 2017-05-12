@@ -1,66 +1,24 @@
-<h1> To Do </h1>
+
 <p>
 <%=link_to 'New Task', new_task_path %>
 </p>
 
-<table>
-  <tr>
-<th> Content </th>
-<th> State </th>
-<th colspan = "4"> </th>
-  </tr>
+<div class = 'row'>
+  <div class = 'col-md-4'>
+    <h1 class = 'text-center'> TO DO </h1>
+    <%= render @to_do %>
+  </div>
 
-  <% @to_do.each do |task|  %>  <!-- must match at tasks controller -->
-      <tr>
-        <td><%= task.content %></td>
-        <td><%= task.state %></td>
-        <td><%= link_to 'Show', task_path(task) %> </td>
-        <td><%= link_to 'Edit', edit_task_path(task) %> </td>
-        <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
-        <td><%= link_to 'Mark as Doing', change_task_path(task, state: "doing"), method: :put  %> </td> <!-- 17 -->
-      </tr>
-      <%end%>
-</table>
+  <div class = 'col-md-4'>
+    <h1 class = 'text-center'> DOING </h1>
+    <%= render @doing %>
 
-<h1> Doing </h1>
+  </div>
 
-<table>
-  <tr>
-<th> Content </th>
-<th> State </th>
-<th colspan = "5"> </th>
-  </tr>
+  <div class = 'col-md-4'>
+    <h1 class = 'text-center'> DONE </h1>
+    <%= render @done %> 
 
-  <% @doing.each do |task|  %> <!-- must match at tasks controller -->
-      <tr>
-        <td><%= task.content %></td>
-        <td><%= task.state %></td>
-        <td><%= link_to 'Show', task_path(task) %> </td>
-        <td><%= link_to 'Edit', edit_task_path(task) %> </td>
-        <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
-        <td><%= link_to 'Mark as To Do', change_task_path(task, state: "to_do"), method: :put  %> </td><!-- 17 -->
-        <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
-      </tr>
-      <%end%>
-</table>
+  </div>
 
-<h1> Done </h1>
-
-<table>
-  <tr>
-<th> Content </th>
-<th> State </th>
-<th colspan = "4"> </th>
-  </tr>
-
-  <% @done.each do |task|  %>  <!-- must match at tasks controller -->
-      <tr>
-        <td><%= task.content %></td>
-        <td><%= task.state %></td>
-        <td><%= link_to 'Show', task_path(task) %> </td>
-        <td><%= link_to 'Edit', edit_task_path(task) %> </td>
-        <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
-        <td><%= link_to 'Mark as Doing', change_task_path(task, state: "doing"), method: :put  %> </td><!-- 17 -->
-      </tr>
-      <%end%>
-</table>
+</div>

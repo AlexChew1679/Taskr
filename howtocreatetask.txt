@@ -238,4 +238,136 @@ add    before_action :set_task, only: [:edit, :update, :show, :destroy, :change]
 
 go to index.html.erb  n paste it    => <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
 
-GO TO INDEX.HTML.ERB AND SEARCH EVERYTHING WITH 17
+GO TO INDEX.HTML.ERB AND SEARCH EVERYTHING WITH 17  ( search for index(original).html.erb)
+
+
+18. render the index.html.erb file
+
+create a _task.html.erb
+
+                        <tr>
+                          <td><%= task.content %></td>
+                          <td><%= task.state %></td>
+                          <td><%= link_to 'Show', task_path(task) %> </td>
+                          <td><%= link_to 'Edit', edit_task_path(task) %> </td>
+                          <td><%= link_to 'Delete', task_path(task), method: :delete, data: {confirm: "Are you Sure?"} %> </td>
+                          <td><%= link_to 'Mark as To Do', change_task_path(task, state: "to_do"), method: :put  %> </td><!-- 17 -->
+                          <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
+                        </tr>
+
+          at index.html.erb
+
+            <%= render @to_do %>
+              <%= render @doing %>
+                <%= render @done %>
+
+19. to design much better, use font awesome n make the index.html.erb like below :
+
+                              <p>
+                              <%=link_to 'New Task', new_task_path %>
+                              </p>
+
+                              <div class = 'row'>
+                                <div class = 'col-md-4'>
+                                  <h1 class = 'text-center'> TO DO </h1>
+                                  <%= render @to_do %>
+                                </div>
+
+                                <div class = 'col-md-4'>
+                                  <h1 class = 'text-center'> DOING </h1>
+                                  <%= render @doing %>
+
+                                </div>
+
+                                <div class = 'col-md-4'>
+                                  <h1 class = 'text-center'> DONE </h1>
+                                  <%= render @done %>
+
+                                </div>
+
+                              </div>
+
+20.   Created: <%= time_ago_in_words(task.created_at)%> ago</div>   , change _task.html.erb
+
+            <div class = 'panel panel-info'>
+              <div class = 'panel panel-heading'><%= link_to edit_task_path(task) do %>
+
+                Created: <%= time_ago_in_words(task.created_at)%> ago</div> <!-- it will create time created -->
+
+                <%end%>
+                <div class = 'panel-body'><%= task.content %></div>
+                  <div class = 'panel-footer'>
+                    <div class="btn-group btn-group-justified" >
+                    <%if task.state == 'doing' %>
+                      <%=link_to '<i class="fa fa-arrow-left"></i>'.html_safe, change_task_path(task, state: "to_do"), method: :put, class: 'btn btn-info btn-block' %>
+                      <%=link_to '<i class="fa fa-arrow-right"></i>'.html_safe, change_task_path(task, state: "done"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%elsif task.state == 'done'%>
+                      <%=link_to '<i class="fa fa-arrow-left"></i>'.html_safe, change_task_path(task, state: "doing"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%else%>
+                      <%=link_to '<i class="fa fa-arrow-right"></i>'.html_safe, change_task_path(task, state: "doing"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%end%>
+                  </div>
+                </div>
+            </div>
+
+NOTICE THE WORDING MARK AS TODO , DONE, DOING HAS BEING CHANGED TO ARROW. THIS IS FROM BOOTSTRAP
+THE CODE AT THE TOP,
+
+<div class = 'panel panel-info'>
+  <div class = 'panel panel-heading'><%= link_to edit_task_path(task) do %>
+
+  THIS IS FROM BOOTSTRAP TOO:   http://getbootstrap.com/components/#panels
+
+  <div class="btn-group btn-group-justified" >    => this is to make arrow left and right on the same row , look at taskr doing
+
+
+  21 . add a delete X _task.html.erb
+
+            <div class = 'panel panel-info'>
+              <div class = 'panel panel-heading'><%= link_to edit_task_path(task) do %>
+
+                Created: <%= time_ago_in_words(task.created_at)%> ago <!-- it will create time created -->
+
+                <%end%>
+
+                  <%=link_to'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}, class: 'pull-right' %>   <= HERE
+                </div>
+                <div class = 'panel-body'><%= task.content %></div>
+                  <div class = 'panel-footer'>
+                    <div class="btn-group btn-group-justified" >
+                    <%if task.state == 'doing' %>
+                      <%=link_to '<i class="fa fa-arrow-left"></i>'.html_safe, change_task_path(task, state: "to_do"), method: :put, class: 'btn btn-info btn-block' %>
+                      <%=link_to '<i class="fa fa-arrow-right"></i>'.html_safe, change_task_path(task, state: "done"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%elsif task.state == 'done'%>
+                      <%=link_to '<i class="fa fa-arrow-left"></i>'.html_safe, change_task_path(task, state: "doing"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%else%>
+                      <%=link_to '<i class="fa fa-arrow-right"></i>'.html_safe, change_task_path(task, state: "doing"), method: :put, class: 'btn btn-info btn-block' %>
+                    <%end%>
+                  </div>
+                </div>
+            </div>
+
+
+            added this
+
+            <h2 class = 'text-center'> New Task </h2>   =>  new.html.erb
+            <h2 class = 'text-center'> Edit Task </h2>  =>  edit.html.erb
+
+
+
+added CSS to .form-signin,  make f.input and f.button more beautiful as below:
+
+            <%= simple_form_for @task, html: {class: 'form-signin'} do |f| %>
+              <%= f.input :content, label: false, placeholder: 'Content', autofocus: true %>
+
+              <%= f.button :submit, class: 'btn btn-primary btn-block' %>
+
+            <% end %>
+
+
+            after login, redirect to Task  , at pages_controller.rb   , add this
+
+            def home
+              if current_user
+                redirect_to tasks_path
+              end
