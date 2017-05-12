@@ -218,6 +218,14 @@ go to task controller , change it to this
 
 17. Create a button to mark as todo doing and done
 
+go to routes.rb
+
+                                resources :tasks do
+                                  member do
+                                    put :change
+                                  end
+                                end
+
 go to tasks controller and place
 
                         def change
@@ -230,4 +238,4 @@ add    before_action :set_task, only: [:edit, :update, :show, :destroy, :change]
 
 go to index.html.erb  n paste it    => <td><%= link_to 'Done', change_task_path(task, state: "done"), method: :put  %> </td><!-- 17 -->
 
-GO TO INDEX.HTML.ERB AND SEARCH EVERYTHING WITH 17 
+GO TO INDEX.HTML.ERB AND SEARCH EVERYTHING WITH 17

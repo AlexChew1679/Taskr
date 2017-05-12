@@ -1,7 +1,7 @@
 <h1> To Do </h1>
-<p>
+
 <%=link_to 'New Task', new_task_path %>
-</p>
+</br>
 
 <table>
   <tr>
@@ -24,6 +24,9 @@
 
 <h1> Doing </h1>
 
+
+</br>
+
 <table>
   <tr>
 <th> Content </th>
@@ -45,6 +48,9 @@
 </table>
 
 <h1> Done </h1>
+
+
+</br>
 
 <table>
   <tr>
